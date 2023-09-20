@@ -1,0 +1,87 @@
+﻿<Page x:Class="AirMonitor.Pages.Overview"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:gmap="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
+      xmlns:hc="https://handyorg.github.io/handycontrol"
+      xmlns:local="clr-namespace:AirMonitor.Pages"
+      mc:Ignorable="d"
+      x:Name="root"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Overview">
+    <Page.Resources>
+        <local:PollutionToImageConverter x:Key="PollutionToImageConverter" />
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ToolBar Grid.Row="0">
+            <ComboBox Width="150">
+                <ComboBoxItem IsSelected="True" Content="2021" Selected="ComboBoxItem_Selected"/>
+                <ComboBoxItem Content="2020" Selected="ComboBoxItem_Selected"/>
+                <ComboBoxItem Content="2019" Selected="ComboBoxItem_Selected"/>
+            </ComboBox>
+        </ToolBar>
+        <hc:TabControl Grid.Row="1">
+            <hc:TabItem>
+                <hc:TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Height="25" Width="25" Source="../Res/map.png"/>
+                        <TextBlock VerticalAlignment="Center" Margin="10 0" Text="Map view"/>
+                    </StackPanel>
+                </hc:TabItem.Header>
+                <gmap:GMapControl x:Name="gmap">
+                    <gmap:GMapControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas IsManipulationEnabled="False" />
+                        </ItemsPanelTemplate>
+                    </gmap:GMapControl.ItemsPanel>
+                </gmap:GMapControl>
+            </hc:TabItem>
+            <hc:TabItem IsSelected="True">
+                <hc:TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Height="25" Width="25" Source="../Res/table.png"/>
+                        <TextBlock VerticalAlignment="Center" Margin="10 0" Text="Table view"/>
+                    </StackPanel>
+                </hc:TabItem.Header>
+                <!--ScrollViewer PreviewMouseWheel="ScrollViewer_PreviewMouseWheel"-->
+                <DataGrid VirtualizingStackPanel.IsVirtualizing="true" ItemsSource="{Binding Records, ElementName=root}" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn IsReadOnly="True" Header="Factory" Binding="{Binding Factory.Name}"/>
+                        <DataGridTextColumn IsReadOnly="True" Header="Pollutant" Binding="{Binding Pollutant.Name}"/>
+                        <DataGridTextColumn Header="Amount" Binding="{Binding Pollution, Mode=TwoWay}"/>
+                        <DataGridTemplateColumn Header="Result">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Height="25" Width="25">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Source" Value="../Res/ok.png" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsExceed, Mode=OneWay}" Value="True">
+                                                        <Setter Property="Source" Value="../Res/neok.png" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <!--/ScrollViewer-->
+            </hc:TabItem>
+        </hc:TabControl>
+        <Border x:Name="loading" Grid.ColumnSpan="3" Grid.RowSpan="3" Opacity="1.0" Visibility="Collapsed">
+            <Border.Background>
+                <SolidColorBrush Color="Blue" Opacity="0.1" />
+            </Border.Background>
+            <hc:LoadingCircle VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+    </Grid>
+</Page>

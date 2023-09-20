@@ -3,10 +3,32 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hc="https://handyorg.github.io/handycontrol"   
         xmlns:local="clr-namespace:AirMonitor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Air monitor" Height="450" Width="800">
     <Grid>
-        
+        <Frame x:Name="mainFrame" NavigationUIVisibility="Hidden"/>
+        <hc:Drawer x:Name="mainDrawer" ShowMode="Press" Dock="Bottom" IsOpen="False">
+            <Border CornerRadius="10 10 0 0" Background="WhiteSmoke" Height="200" Width="400">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Height="100" Width="100" Click="ImportClick">
+                        <Button.Content>
+                            <StackPanel Orientation="Vertical">
+                                <Image Height="50" HorizontalAlignment="Center" Width="50" Source="../Res/exc.png"/>
+                                <TextBlock HorizontalAlignment="Center" Text="Import"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="1" Height="100" Width="100" Content="Reserved"/>
+                    <Button Grid.Column="2" Height="100" Width="100" Content="Reserved"/>
+                </Grid>
+            </Border>
+        </hc:Drawer>
     </Grid>
 </Window>

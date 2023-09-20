@@ -259,7 +259,6 @@ namespace AirMonitor
             catch (Exception ex)
             {
                 Growl.Error(ex.Message);
-                return;
             }
         }
 

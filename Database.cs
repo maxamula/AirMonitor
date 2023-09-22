@@ -184,7 +184,7 @@ namespace AirMonitor
     {
         public Database()
         {
-            _connection = new MySqlConnection($"Server=localhost;Database=ecomon;User=root;Password=null;");
+            _connection = new MySqlConnection($"Server=localhost;Database=ecomon;User=root;Password=root;");
             _connection.Open();
         }
 
